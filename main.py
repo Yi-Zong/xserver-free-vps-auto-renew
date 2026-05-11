@@ -1,6 +1,7 @@
 import asyncio
 import os
 import sys
+import socket
 import logging
 import aiohttp
 from urllib.parse import urlparse
@@ -10,6 +11,32 @@ from playwright_captcha import CaptchaType, ClickSolver, FrameworkType
 from playwright_captcha.utils.camoufox_add_init_script.add_init_script import get_addon_path
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+
+async def capture_debug_context(page, tag='debug'):
+    info = {'tag': tag, 'url': '', 'title': '', 'body_excerpt': ''}
+    try:
+        info['url'] = page.url
+    except Exception:
+        pass
+    try:
+        info['title'] = await page.title()
+    except Exception:
+        pass
+    try:
+        body_text = await page.locator('body').inner_text(timeout=3000)
+        body_text = ' '.join(body_text.split())
+        info['body_excerpt'] = body_text[:1200]
+    except Exception:
+        pass
+    try:
+        await page.screenshot(path=f'{tag}.png', full_page=True)
+    except Exception:
+        pass
+    logging.info(f"DEBUG_CONTEXT[{tag}]: url={info['url']}")
+    logging.info(f"DEBUG_CONTEXT[{tag}]: title={info['title']}")
+    logging.info(f"DEBUG_CONTEXT[{tag}]: body_excerpt={info['body_excerpt']}")
+    return info
 
 async def dismiss_campaign_modal(page):
     """Close/remove XServer free-user campaign modal if it blocks clicks."""
@@ -44,6 +71,86 @@ async def dismiss_campaign_modal(page):
     except Exception as e:
         logging.warning(f'Campaign modal dismiss skipped: {e}')
 
+def get_free_local_port() -> int:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(('127.0.0.1', 0))
+        return s.getsockname()[1]
+
+
+def build_pproxy_upstream(proxy_server: str) -> str:
+    parsed = urlparse(proxy_server)
+    scheme = (parsed.scheme or '').lower()
+    host = parsed.hostname
+    port = parsed.port
+    if not host or not port:
+        raise ValueError(f'Invalid proxy URL: {proxy_server}')
+    if scheme != 'socks5':
+        raise ValueError(f'Only socks5 can use pproxy bridge, got: {scheme}')
+    if parsed.username or parsed.password:
+        user = parsed.username or ''
+        password = parsed.password or ''
+        return f'socks5://{host}:{port}#{user}:{password}'
+    return f'socks5://{host}:{port}'
+
+
+async def start_pproxy_bridge(proxy_server: str):
+    port = get_free_local_port()
+    listen = f'http://127.0.0.1:{port}'
+    upstream = build_pproxy_upstream(proxy_server)
+    log_path = f'/tmp/pproxy-{port}.log'
+    logging.info(f'Starting local proxy bridge: {listen} -> {upstream}')
+    logf = open(log_path, 'ab')
+    proc = await asyncio.create_subprocess_exec(
+        sys.executable, '-m', 'pproxy', '-l', listen, '-r', upstream,
+        stdout=logf,
+        stderr=logf,
+    )
+
+    last_error = None
+    for _ in range(30):
+        if proc.returncode is not None:
+            raise RuntimeError(f'pproxy exited early with code {proc.returncode}. log={log_path}')
+        try:
+            reader, writer = await asyncio.open_connection('127.0.0.1', port)
+            writer.close()
+            await writer.wait_closed()
+            logging.info(f'Local proxy bridge is ready at {listen}')
+            return {'server': listen, 'proc': proc, 'logf': logf, 'log_path': log_path}
+        except Exception as e:
+            last_error = e
+            await asyncio.sleep(0.2)
+
+    proc.terminate()
+    try:
+        await proc.wait()
+    except Exception:
+        pass
+    logf.close()
+    raise RuntimeError(f'pproxy bridge did not become ready: {last_error}. log={log_path}')
+
+
+async def stop_pproxy_bridge(bridge) -> None:
+    if not bridge:
+        return
+    proc = bridge.get('proc')
+    logf = bridge.get('logf')
+    if proc and proc.returncode is None:
+        proc.terminate()
+        try:
+            await asyncio.wait_for(proc.wait(), timeout=5)
+        except Exception:
+            proc.kill()
+            try:
+                await asyncio.wait_for(proc.wait(), timeout=5)
+            except Exception:
+                pass
+    if logf:
+        try:
+            logf.close()
+        except Exception:
+            pass
+
+
 async def main():
     email = os.getenv('EMAIL', '')
     password = os.getenv('PASSWORD', '')
@@ -62,19 +169,35 @@ async def main():
         'i_know_what_im_doing': True,
         'config': {'forceScopeAccess': True},
         'main_world_eval': True,
-        'addons': [os.path.abspath(get_addon_path())]
+        'addons': [os.path.abspath(get_addon_path())],
+        'firefox_user_prefs': {},
     }
-    
+
+    bridge = None
     if proxy_server:
         parsed = urlparse(proxy_server)
-        proxy_config = {
-            'server': f"{parsed.scheme}://{parsed.hostname}{f':{parsed.port}' if parsed.port else ''}"
-        }
-        if parsed.username:
-            proxy_config['username'] = parsed.username
-        if parsed.password:
-            proxy_config['password'] = parsed.password
-        options['proxy'] = proxy_config
+        scheme = (parsed.scheme or '').lower()
+        host = parsed.hostname
+        port = parsed.port
+        if not host or not port:
+            raise ValueError(f'Invalid proxy URL: {proxy_server}')
+
+        if scheme == 'socks5':
+            bridge = await start_pproxy_bridge(proxy_server)
+            options['proxy'] = {'server': bridge['server']}
+            logging.info('Configured SOCKS5 proxy via local pproxy bridge.')
+        elif scheme in ('http', 'https'):
+            proxy_config = {
+                'server': f"{scheme}://{host}:{port}"
+            }
+            if parsed.username:
+                proxy_config['username'] = parsed.username
+            if parsed.password:
+                proxy_config['password'] = parsed.password
+            options['proxy'] = proxy_config
+            logging.info('Configured HTTP(S) proxy via Playwright proxy settings.')
+        else:
+            raise ValueError(f'Unsupported proxy scheme: {scheme}')
     
     logging.info('Launching Camoufox in Python...')
     async with AsyncCamoufox(**options) as browser:
@@ -92,11 +215,20 @@ async def main():
             await page.locator('#user_password').fill(password)
             
             logging.info('Logging in...')
-            await page.locator('text="ログインする"').click(no_wait_after=True)
+            login_btn = page.locator('text="ログインする"')
+            try:
+                await login_btn.click(no_wait_after=True)
+            except Exception:
+                await capture_debug_context(page, 'login_click_failed')
+                raise
             
             # Manually wait for the dashboard to appear instead of waiting for networkidle
             logging.info('Waiting for dashboard to load...')
-            await page.wait_for_selector('a[href^="/xapanel/xvps/server/detail?id="]', timeout=30000)
+            try:
+                await page.wait_for_selector('a[href^="/xapanel/xvps/server/detail?id="]', timeout=30000)
+            except Exception:
+                await capture_debug_context(page, 'dashboard_wait_failed')
+                raise
 
             await dismiss_campaign_modal(page)
 
@@ -121,6 +253,7 @@ async def main():
                 logging.info('SKIP: Renewal is not yet available (detected .newApp__suspended).')
                 logging.info('XServer: "利用期限の1日前から更新手続きが可能です。"')
                 await page.screenshot(path='skip_renewal.png', full_page=True)
+                await capture_debug_context(page, 'skip_renewal')
                 return
 
             logging.info('Retrieving captcha...')
@@ -174,11 +307,16 @@ async def main():
             logging.info('Done!')
         
         except Exception as e:
+            try:
+                await capture_debug_context(page, 'fatal_error')
+            except Exception:
+                pass
             logging.error(f'Script Error: {e}')
             sys.exit(1)
         finally:
             await asyncio.sleep(2)
             await context.close()
+            await stop_pproxy_bridge(bridge)
 
 if __name__ == '__main__':
     asyncio.run(main())
