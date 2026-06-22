@@ -12,3 +12,6 @@ node_modules/
 before_click.png
 skip_renewal.png
 logs/
+*.db
+*.sqlite
+*.sqlite3
