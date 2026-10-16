@@ -1,0 +1,285 @@
+#!/usr/bin/env python3
+import os
+import re
+import sys
+import json
+import mimetypes
+import subprocess
+from urllib import request, parse, error
+from datetime import datetime
+from pathlib import Path
+from uuid import uuid4
+
+BOT_TOKEN = os.getenv('TG_BOT_TOKEN', '')
+CHAT_ID = os.getenv('TG_CHAT_ID', '')
+WORKDIR = '/opt/xserver/app'
+LOG_DIR = '/opt/xserver/logs'
+WORKSPACE = Path('/opt/xserver/app')
+UPLOAD_ENDPOINT = os.getenv('XSERVER_IMAGE_UPLOAD_URL', 'https://111666.best/api/upload')
+UPLOAD_REFERER = os.getenv('XSERVER_IMAGE_UPLOAD_REFERER', 'https://111666.best')
+
+IMAGE_CANDIDATES = [
+    WORKSPACE / 'final_result.png',
+    WORKSPACE / 'SUCCESS_RENEWAL_FINAL.png',
+    WORKSPACE / 'SUCCESS_XVFB.png',
+    WORKSPACE / 'xserver_final.png',
+    WORKSPACE / 'xserver_final_push.png',
+    WORKSPACE / 'FAIL_FINAL.png',
+    WORKSPACE / 'STILL_STUCK.png',
+    WORKSPACE / 'no_renew_redirect.png',
+    WORKSPACE / 'xserver' / 'skip_renewal.png',
+    WORKSPACE / 'xserver' / 'before_click.png',
+]
+
+
+def http_post(url: str, data: bytes = None, headers: dict | None = None, timeout: int = 30):
+    req = request.Request(url, data=data, headers=headers or {})
+    with request.build_opener(request.ProxyHandler({})).open(req, timeout=timeout) as resp:
+        body = resp.read()
+        return body.decode('utf-8', errors='replace'), resp.headers
+
+
+def tg_send(text: str):
+    data = parse.urlencode({'chat_id': CHAT_ID, 'text': text}).encode()
+    return http_post(f'https://api.telegram.org/bot{BOT_TOKEN}/sendMessage', data=data)[0]
+
+
+def tg_send_photo(photo_path: str, caption: str):
+    boundary = f'----OpenClawTG{uuid4().hex}'
+    p = Path(photo_path)
+    mime = mimetypes.guess_type(p.name)[0] or 'application/octet-stream'
+    photo_bytes = p.read_bytes()
+
+    parts = []
+
+    def add_field(name: str, value: str):
+        parts.append(f'--{boundary}\r\n'.encode())
+        parts.append(f'Content-Disposition: form-data; name="{name}"\r\n\r\n'.encode())
+        parts.append(value.encode('utf-8'))
+        parts.append(b'\r\n')
+
+    add_field('chat_id', CHAT_ID)
+    add_field('caption', caption)
+
+    parts.append(f'--{boundary}\r\n'.encode())
+    parts.append(
+        f'Content-Disposition: form-data; name="photo"; filename="{p.name}"\r\n'.encode()
+    )
+    parts.append(f'Content-Type: {mime}\r\n\r\n'.encode())
+    parts.append(photo_bytes)
+    parts.append(b'\r\n')
+    parts.append(f'--{boundary}--\r\n'.encode())
+
+    body = b''.join(parts)
+    headers = {'Content-Type': f'multipart/form-data; boundary={boundary}'}
+    return http_post(f'https://api.telegram.org/bot{BOT_TOKEN}/sendPhoto', data=body, headers=headers, timeout=60)[0]
+
+
+def upload_image_to_111666best(photo_path: str):
+    p = Path(photo_path)
+    boundary = f'----OpenClawUpload{uuid4().hex}'
+    mime = mimetypes.guess_type(p.name)[0] or 'application/octet-stream'
+    photo_bytes = p.read_bytes()
+
+    parts = []
+
+    def add_field(name: str, value: str):
+        parts.append(f'--{boundary}\r\n'.encode())
+        parts.append(f'Content-Disposition: form-data; name="{name}"\r\n\r\n'.encode())
+        parts.append(value.encode('utf-8'))
+        parts.append(b'\r\n')
+
+    # Lsky Pro / similar image beds usually accept one of these field names; `file` is the most common.
+    add_field('strategy_id', os.getenv('XSERVER_IMAGE_STRATEGY_ID', ''))
+
+    parts.append(f'--{boundary}\r\n'.encode())
+    parts.append(
+        f'Content-Disposition: form-data; name="file"; filename="{p.name}"\r\n'.encode()
+    )
+    parts.append(f'Content-Type: {mime}\r\n\r\n'.encode())
+    parts.append(photo_bytes)
+    parts.append(b'\r\n')
+    parts.append(f'--{boundary}--\r\n'.encode())
+    body = b''.join(parts)
+
+    headers = {
+        'Content-Type': f'multipart/form-data; boundary={boundary}',
+        'Accept': 'application/json, text/plain, */*',
+        'Referer': UPLOAD_REFERER,
+        'Origin': UPLOAD_REFERER,
+        'User-Agent': 'Mozilla/5.0 OpenClaw XServer notifier',
+    }
+
+    raw, _ = http_post(UPLOAD_ENDPOINT, data=body, headers=headers, timeout=90)
+
+    try:
+        payload = json.loads(raw)
+    except Exception as e:
+        raise RuntimeError(f'图床返回非 JSON: {raw[:300]}') from e
+
+    candidates = [
+        payload.get('data', {}).get('url') if isinstance(payload.get('data'), dict) else None,
+        payload.get('data', {}).get('links', {}).get('url') if isinstance(payload.get('data'), dict) and isinstance(payload.get('data', {}).get('links'), dict) else None,
+        payload.get('data', {}).get('links', {}).get('html') if isinstance(payload.get('data'), dict) and isinstance(payload.get('data', {}).get('links'), dict) else None,
+        payload.get('url'),
+    ]
+    image_url = next((x for x in candidates if isinstance(x, str) and x.strip()), None)
+    if not image_url:
+        raise RuntimeError(f'图床返回里没找到图片链接: {raw[:500]}')
+    return image_url, payload
+
+
+def expiry_date(text):
+    match = re.search(r'利用期限\s*(\d{4})[年/-](\d{1,2})[月/-](\d{1,2})日?', text)
+    if not match:
+        return None
+    try:
+        return datetime(*map(int, match.groups())).date()
+    except ValueError:
+        return None
+
+
+def classify_business(result, before, after, logged_in):
+    old, new = expiry_date(before), expiry_date(after)
+    status = 'FAILED'
+    if logged_in and old and new and result.startswith('NOT_ELIGIBLE') and old == new:
+        status = 'NOT_ELIGIBLE'
+    elif logged_in and old and new and new > old and result.startswith('SUBMITTED') and '利用期限の更新手続きが完了しました' in result:
+        status = 'RENEWED_VERIFIED'
+    return {'status': status, 'need_sign': status != 'NOT_ELIGIBLE', 'run_ok': status != 'FAILED',
+            'expiry_before': str(old) if old else '未知', 'expiry_after': str(new) if new else '未知'}
+
+
+def infer_expiry(text: str):
+    patterns = [
+        r'利用期限[^\n]*?(\d{4}[/-]\d{1,2}[/-]\d{1,2})',
+        r'有効期限[^\n]*?(\d{4}[/-]\d{1,2}[/-]\d{1,2})',
+        r'期限[^\n]*?(\d{4}[/-]\d{1,2}[/-]\d{1,2})',
+    ]
+    for p in patterns:
+        m = re.search(p, text)
+        if m:
+            return m.group(1)
+    return '未知'
+
+
+def pick_screenshot(start_ts: float | None = None):
+    candidates = []
+    for path in IMAGE_CANDIDATES:
+        if path.exists() and path.is_file():
+            try:
+                stat = path.stat()
+                if start_ts is None or stat.st_mtime >= start_ts - 5:
+                    candidates.append((stat.st_mtime, str(path)))
+            except FileNotFoundError:
+                pass
+
+    if not candidates:
+        for ext in ('*.png', '*.jpg', '*.jpeg', '*.webp'):
+            for path in WORKSPACE.glob(ext):
+                try:
+                    stat = path.stat()
+                    if start_ts is None or stat.st_mtime >= start_ts - 5:
+                        candidates.append((stat.st_mtime, str(path)))
+                except FileNotFoundError:
+                    pass
+
+    if not candidates:
+        return None
+    candidates.sort(reverse=True)
+    return candidates[0][1]
+
+
+def build_message(label: str, run_ok: bool, need_sign: bool, sign_status: str, expiry: str, screenshot_path: str | None = None, image_url: str | None = None, provider_result: str = '', core_exit_code: int | None = None):
+    script_ok = (core_exit_code == 0) if core_exit_code is not None else run_ok
+    script_status = '✅ 正常' if script_ok else '❌ 运行失败'
+    if run_ok:
+        renewal_status = '✅ 续期成功' if need_sign else '🌿 暂无需续期'
+    else:
+        renewal_status = '❌ 未确认续期成功' if script_ok else '⚠️ 未完成核验'
+    lines = ['🖥 XServer 运行报告', f'账号：{label}',
+             f'脚本运行：{script_status}', f'账号续期：{renewal_status}']
+    if image_url:
+        lines.append(f'🔗 图片链接：{image_url}')
+    return '\n'.join(lines)
+
+
+RUNS_DIR = Path('/opt/xserver/runs')
+
+
+def main():
+    os.umask(0o077)
+    email = os.getenv('EMAIL', '').strip()
+    password = os.getenv('PASSWORD', '')
+    label = os.getenv('ACCOUNT_LABEL', email or 'unknown')
+    if not email or not password:
+        raise SystemExit('EMAIL/PASSWORD missing')
+    run_dir = RUNS_DIR / (datetime.now().strftime('%Y%m%dT%H%M%S') + '-' + uuid4().hex[:8])
+    run_dir.mkdir(parents=True, mode=0o700)
+    run_env = {k:v for k,v in os.environ.items() if 'proxy' not in k.lower()}
+    run_env.update(EMAIL=email, PASSWORD=password, RUN_DIR=str(run_dir), GEOIP='false', DEBUG='false',
+                   CAPTCHA_API='https://jp--xserver--fmyy8zpzrgwf.code.run/')
+    cmd = ['xvfb-run', '-a', str(WORKSPACE / '.venv/bin/python'), '-u', str(WORKSPACE / 'main.py')]
+    core_rc = 1
+    try:
+        proc = subprocess.run(cmd, cwd=WORKDIR, capture_output=True, text=True, timeout=900, env=run_env)
+        core_rc = proc.returncode
+        output = (proc.stdout or '') + (proc.stderr or '')
+    except subprocess.TimeoutExpired as exc:
+        output = 'Core timeout; no automatic retry (avoid duplicate submission).'
+    except Exception as exc:
+        output = 'Core failed: ' + type(exc).__name__
+    (run_dir / 'run.log').write_text(output)
+    logged_in = (run_dir / 'login-result.json').exists() and json.loads((run_dir / 'login-result.json').read_text()).get('logged_in') is True
+    def read(path):
+        return path.read_text() if path.exists() else ''
+    results = []
+    for server in sorted(run_dir.glob('server-*')):
+        if not server.is_dir():
+            continue
+        r=classify_business(read(server/'RESULT.txt'),read(server/'detail-before.txt'),read(server/'detail-after.txt'),logged_in)
+        r.update(server=server.name, provider_result=read(server/'RESULT.txt'))
+        results.append(r)
+    run_ok = core_rc == 0 and bool(results) and all(r['run_ok'] for r in results)
+    need_sign = not results or any(r['need_sign'] for r in results)
+    renewed = sum(r['status']=='RENEWED_VERIFIED' for r in results)
+    sign_status = ('RENEWED_VERIFIED：已核实新增续期' if renewed else 'NOT_ELIGIBLE：未到窗口，未新增续期') if run_ok else 'FAILED：运行或业务核验失败，未确认新增续期'
+    expiry = '; '.join(r['expiry_before']+' → '+r['expiry_after'] for r in results) or '未知'
+    shots = sorted(run_dir.rglob('*.png'), key=lambda p:p.stat().st_mtime)
+    screenshot = shots[-1] if shots else run_dir/'failure-result.png'
+    if not shots:
+        from PIL import Image, ImageDraw
+        img=Image.new('RGB',(1000,360),'#152033')
+        draw=ImageDraw.Draw(img)
+        draw.text((40,50),'XServer renewal result',fill='white')
+        draw.text((40,120),'FAILED - see notification caption and run evidence',fill='#ff8080')
+        draw.text((40,200),datetime.now().isoformat(),fill='white')
+        img.save(screenshot)
+    msg=build_message(email,run_ok,need_sign,sign_status,expiry,screenshot_path=str(screenshot),
+                      provider_result='\n'.join(r['provider_result'] for r in results), core_exit_code=core_rc)
+    (run_dir/'notification-caption.txt').write_text(msg)
+    receipt={'ok':False}
+    try:
+        payload=json.loads(tg_send_photo(str(screenshot),msg))
+        receipt={'ok':payload.get('ok') is True,'message_id':payload.get('result',{}).get('message_id')}
+        if not receipt['ok'] or not receipt['message_id']:
+            raise RuntimeError('Telegram photo response not confirmed')
+    except Exception as exc:
+        receipt['error_type']=type(exc).__name__
+    exit_code=0 if run_ok and receipt['ok'] and receipt.get('message_id') else 1
+    result={'run_ok':run_ok,'need_sign':need_sign,'sign_status':sign_status,'expiry':expiry,
+            'logged_in':logged_in,'servers':results,'core_exit_code':core_rc,'wrapper_exit_code':exit_code,
+            'telegram':receipt,'sent_via':'telegram-photo' if receipt['ok'] else 'photo-failed',
+            'screenshot_path':str(screenshot),'run_dir':str(run_dir),'attempts':1,'retry_attempted':False,
+            'network':{'proxy_env':[],'browser_proxy_type':0,'captcha_trust_env':False,'notification_proxy_handler':{}}}
+    (run_dir/'notification-result.json').write_text(json.dumps(result,ensure_ascii=False,indent=2))
+    Path(LOG_DIR).mkdir(parents=True,exist_ok=True)
+    log_path=Path(LOG_DIR)/('xserver_'+re.sub(r'[^a-zA-Z0-9_.-]+','_',label)+'.log')
+    with log_path.open('a') as f:
+        f.write('\n'+json.dumps(result,ensure_ascii=False)+'\n')
+    print(json.dumps(result,ensure_ascii=False,indent=2))
+    return exit_code
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())

@@ -11,7 +11,7 @@ from queue import Queue
 from urllib import parse, request
 
 BOT_TOKEN = os.getenv('TG_BOT_TOKEN', '').strip()
-ADMIN_TG_ID = os.getenv('ADMIN_TG_ID', '').strip()
+ADMIN_TG_ID = ''
 DB_PATH = Path(os.getenv('BOT_DB_PATH', './bot_users.db'))
 POLL_TIMEOUT = int(os.getenv('TG_POLL_TIMEOUT', '30'))
 WORKDIR = os.getenv('XSERVER_WORKDIR', os.getcwd())
@@ -391,7 +391,7 @@ def help_text():
         '如果你想直接发送文字，请使用：\n\n'
         '邮箱 密码 socks5代理\n\n'
         '格式示范：\n'
-        'xxxxxxx@gmail.com your_password socks5://user:pass@1.2.3.4:1080'
+        'account@example.invalid your_password socks5://user:pass@192.0.2.1:1080'
     )
 
 
@@ -453,7 +453,7 @@ def parse_account_text(text: str):
 
 def prompt_add_account(chat_id: str):
     PENDING_ACTIONS[chat_id] = {'action': 'add_account'}
-    send_msg(chat_id, '请直接发送：\n\n邮箱 密码 socks5代理\n\n说明：必须添加代理才可以进行签到。\n\n格式示范：\nxxxxxxx@gmail.com your_password socks5://user:pass@1.2.3.4:1080')
+    send_msg(chat_id, '请直接发送：\n\n邮箱 密码 socks5代理\n\n说明：必须添加代理才可以进行签到。\n\n格式示范：\account@example.invalid your_password socks5://user:pass@192.0.2.1:1080')
 
 
 def prompt_settime(chat_id: str, account_id: int):
@@ -471,7 +471,7 @@ def prompt_setproxy(chat_id: str, account_id: int):
         send_msg(chat_id, '账号不存在。')
         return
     PENDING_ACTIONS[chat_id] = {'action': 'set_proxy', 'account_id': account_id}
-    send_msg(chat_id, f'请回复 {acc["email"]} 的 socks5 代理。\n如需清空，回复 none\n\n格式示范：\nsocks5://user:pass@1.2.3.4:1080')
+    send_msg(chat_id, f'请回复 {acc["email"]} 的 socks5 代理。\n如需清空，回复 none\n\n格式示范：\nsocks5://user:pass@192.0.2.1:1080')
 
 
 def send_home(chat_id: str):
@@ -504,7 +504,7 @@ def handle_pending_text(chat_id: str, text: str, msg=None):
         parsed = parse_account_text(text)
         if not parsed:
             PENDING_ACTIONS.pop(chat_id, None)
-            send_msg(chat_id, '格式不对。\n\n本次添加已取消，请重新点击“添加账号”后再输入。\n\n正确格式：\n邮箱 密码 socks5代理\n\n格式示范：\nxxxxxxx@gmail.com your_password socks5://user:pass@1.2.3.4:1080', reply_markup=main_menu_markup(bool(list_accounts(chat_id)), chat_id == ADMIN_TG_ID))
+            send_msg(chat_id, '格式不对。\n\n本次添加已取消，请重新点击“添加账号”后再输入。\n\n正确格式：\n邮箱 密码 socks5代理\n\n格式示范：\account@example.invalid your_password socks5://user:pass@192.0.2.1:1080', reply_markup=main_menu_markup(bool(list_accounts(chat_id)), chat_id == ADMIN_TG_ID))
             return True
         email, password, proxy, alias = parsed
         upsert_account(chat_id, email, password, proxy, alias)
@@ -529,7 +529,7 @@ def handle_pending_text(chat_id: str, text: str, msg=None):
         raw = text.strip()
         value = None if raw.lower() == 'none' else raw
         if value and not is_valid_proxy(value):
-            send_msg(chat_id, '代理格式不对。当前只支持 socks5://\n\n格式示范：\nsocks5://user:pass@1.2.3.4:1080')
+            send_msg(chat_id, '代理格式不对。当前只支持 socks5://\n\n格式示范：\nsocks5://user:pass@192.0.2.1:1080')
             return True
         update_account(aid, 'proxy_server', value)
         acc = get_account(aid)

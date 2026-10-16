@@ -1,0 +1,9 @@
+{
+  "offline_tests_passed": 8,
+  "syntax_checked": 40,
+  "known_secret_and_pattern_scan": "passed",
+  "production_manifest_unchanged": true,
+  "live_accounts_executed": false,
+  "new_machine_deployment_tested": false,
+  "scope": "source backup; not runtime or credentials backup"
+}

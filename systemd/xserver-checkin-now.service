@@ -1,0 +1,16 @@
+[Unit]
+Description=XServer immediate recovery check-in
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/xserver/app
+ExecStart=/usr/bin/python3 /opt/xserver/app/run_xserver_all_now.py
+User=root
+UMask=0077
+EnvironmentFile=/opt/xserver/app/.env.runtime
+Nice=10
+TimeoutStartSec=1h
+StandardOutput=append:/opt/xserver/logs/xserver_recovery.log
+StandardError=append:/opt/xserver/logs/xserver_recovery.log

@@ -1,0 +1,11 @@
+[Unit]
+Description=Run XServer evening check-in window daily
+
+[Timer]
+OnCalendar=*-*-* 20:00:00 Asia/Shanghai
+Persistent=true
+AccuracySec=1s
+Unit=xserver-checkin@evening.service
+
+[Install]
+WantedBy=timers.target

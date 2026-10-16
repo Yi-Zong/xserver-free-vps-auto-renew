@@ -1,0 +1,470 @@
+[
+  {
+    "source": "/opt/xserver/app/.env.example",
+    "repository": "app/.env.example",
+    "source_sha256": "abdaf313881bbdfedd9ad763d85660456963ac678ee6590700dfe7c50d65aaeb",
+    "published_sha256": "abdaf313881bbdfedd9ad763d85660456963ac678ee6590700dfe7c50d65aaeb"
+  },
+  {
+    "source": "/opt/xserver/app/.github/workflows/main.yml",
+    "repository": "app/.github/workflows/main.yml.disabled",
+    "source_sha256": "f2377c4f0cfdf9f78a4697e172c7750560c272a7a71917fcacdf8df2038d8da6",
+    "published_sha256": "f2377c4f0cfdf9f78a4697e172c7750560c272a7a71917fcacdf8df2038d8da6"
+  },
+  {
+    "source": "/opt/xserver/app/.gitignore",
+    "repository": "app/.gitignore",
+    "source_sha256": "d6adb02eb18b8dc44df0bc2508a68549ecace6ea2e416a00f6841aaa490ac245",
+    "published_sha256": "d6adb02eb18b8dc44df0bc2508a68549ecace6ea2e416a00f6841aaa490ac245"
+  },
+  {
+    "source": "/opt/xserver/app/Dockerfile",
+    "repository": "app/Dockerfile",
+    "source_sha256": "c9e84f5e5ccb993f98cdaa97994b2771c674c16ece7c44802fdf53010e8f3069",
+    "published_sha256": "c9e84f5e5ccb993f98cdaa97994b2771c674c16ece7c44802fdf53010e8f3069"
+  },
+  {
+    "source": "/opt/xserver/app/README.md",
+    "repository": "archive/production-original-README.md",
+    "source_sha256": "7fec423bf83af7674f74484ab5f96ab925fbe887afe1d7376889d58c8ada58a3",
+    "published_sha256": "1b966b86e7d5a01f3cf5b35b71bca9a2b16943be567ac00d8d0260259873ccdf"
+  },
+  {
+    "source": "/opt/xserver/app/entrypoint.sh",
+    "repository": "app/entrypoint.sh",
+    "source_sha256": "1f70f9a820e5e6d85f160e0a2ef6fa5415ec10fbd60af389e3f48ff1a4b486ef",
+    "published_sha256": "1f70f9a820e5e6d85f160e0a2ef6fa5415ec10fbd60af389e3f48ff1a4b486ef"
+  },
+  {
+    "source": "/opt/xserver/app/main.py",
+    "repository": "app/main.py",
+    "source_sha256": "5dc6acca98315b704dd1cf41a229630e8bfb21e3f6b8a8bd6a9168cec0196d10",
+    "published_sha256": "5dc6acca98315b704dd1cf41a229630e8bfb21e3f6b8a8bd6a9168cec0196d10"
+  },
+  {
+    "source": "/opt/xserver/app/requirements.txt",
+    "repository": "app/requirements.txt",
+    "source_sha256": "28c957c18463bece931c39e587d0dcb62da60eacb7b4f2c3685521c84d37675d",
+    "published_sha256": "28c957c18463bece931c39e587d0dcb62da60eacb7b4f2c3685521c84d37675d"
+  },
+  {
+    "source": "/opt/xserver/app/run-docker.sh",
+    "repository": "app/run-docker.sh",
+    "source_sha256": "8e6679da5a099d97785eb3b978ce2c8380265679abb6ad176ba009ca827bed67",
+    "published_sha256": "8e6679da5a099d97785eb3b978ce2c8380265679abb6ad176ba009ca827bed67"
+  },
+  {
+    "source": "/opt/xserver/app/run_xserver_all_now.py",
+    "repository": "app/run_xserver_all_now.py",
+    "source_sha256": "7c6ebd010422f2ddd584fe14d0052b7556265a9244750c98f9f0381bfb57136f",
+    "published_sha256": "7c6ebd010422f2ddd584fe14d0052b7556265a9244750c98f9f0381bfb57136f"
+  },
+  {
+    "source": "/opt/xserver/app/run_xserver_notify.py",
+    "repository": "app/run_xserver_notify.py",
+    "source_sha256": "e1909ae174bf6d3db1ef44764f8cc02941f46717dccb62cd89a0dc8fc0cfe671",
+    "published_sha256": "04c6c79d84327a43f0b15cc0efead72fd7c940752e4db71391148d3a3364b773"
+  },
+  {
+    "source": "/opt/xserver/app/run_xserver_random_window.py",
+    "repository": "app/run_xserver_random_window.py",
+    "source_sha256": "0c7e5774bc9cd22aef4645def6b7653b6288b8fe267fbb81e3604c6cec475c4d",
+    "published_sha256": "3ef37b47c7c638767e24282866ffad39cc1afa6aba9abb5dce57db4ab70310dc"
+  },
+  {
+    "source": "/opt/xserver/app/test_migration.py",
+    "repository": "archive/production-test_migration.py",
+    "source_sha256": "9a1c67ff523bc0fd94b305d8fb91b6589aab5c44b5a095ae92f982d2cacaeecd",
+    "published_sha256": "ad63b7a6354fce7ad0462a8d5d6294a782bef1e5f356effa56db8ea06039cdda"
+  },
+  {
+    "source": "/opt/xserver/app/xserver_renew.js",
+    "repository": "app/xserver_renew.js",
+    "source_sha256": "56ca9ae2f6c19f5c2b0d4092ceb8af2d35ea890b73425eed8fb177259f9647f6",
+    "published_sha256": "60177ca59e49b08ae0745f6f495279e2a4c5bc0aaeca420123275cdd01905201"
+  },
+  {
+    "source": "/opt/xserver/app/xserver_runner.js",
+    "repository": "app/xserver_runner.js",
+    "source_sha256": "677de6dc83afc4f8ff99472e526b33dad84f9eddad587fe7804d0ea471001a4d",
+    "published_sha256": "77d69d8150425cc33ef2527f6af5a148b9b6399ea673faa7217ba7519f6aca1c"
+  },
+  {
+    "source": "/opt/xserver/app/xserver_verify.js",
+    "repository": "app/xserver_verify.js",
+    "source_sha256": "01fec6cd6fa8d1c876237ce7844dcf4d07c431865fbcb76c36d7837b61e684c2",
+    "published_sha256": "578e82a41a68ca0c53bb5da5de62c20cf95ecc6f4ff6e9614e5f01e6af8ac6bd"
+  },
+  {
+    "source": "/opt/xserver/github-backup-work/xserver-free-vps-auto-renew/.env.example",
+    "repository": "archive/github-backup-work/xserver-free-vps-auto-renew/.env.example",
+    "source_sha256": "b24c084c8fccbd8085c2885b58551bd9524b6389fba7c4d8bac40259865f3796",
+    "published_sha256": "1b420c2496217c146a4d189411f2fb69ef0cf403859f879f6aabf8409c360936"
+  },
+  {
+    "source": "/opt/xserver/github-backup-work/xserver-free-vps-auto-renew/.github/workflows/main.yml",
+    "repository": "archive/github-backup-work/xserver-free-vps-auto-renew/.github/workflows/main.yml.disabled",
+    "source_sha256": "f2377c4f0cfdf9f78a4697e172c7750560c272a7a71917fcacdf8df2038d8da6",
+    "published_sha256": "f2377c4f0cfdf9f78a4697e172c7750560c272a7a71917fcacdf8df2038d8da6"
+  },
+  {
+    "source": "/opt/xserver/github-backup-work/xserver-free-vps-auto-renew/.gitignore",
+    "repository": "archive/github-backup-work/xserver-free-vps-auto-renew/.gitignore",
+    "source_sha256": "d617048da47a4a9a12dd8b36519320d56d8e38fb96ae8ff23eede0a02c13d737",
+    "published_sha256": "d617048da47a4a9a12dd8b36519320d56d8e38fb96ae8ff23eede0a02c13d737"
+  },
+  {
+    "source": "/opt/xserver/github-backup-work/xserver-free-vps-auto-renew/Dockerfile",
+    "repository": "archive/github-backup-work/xserver-free-vps-auto-renew/Dockerfile",
+    "source_sha256": "c9e84f5e5ccb993f98cdaa97994b2771c674c16ece7c44802fdf53010e8f3069",
+    "published_sha256": "c9e84f5e5ccb993f98cdaa97994b2771c674c16ece7c44802fdf53010e8f3069"
+  },
+  {
+    "source": "/opt/xserver/github-backup-work/xserver-free-vps-auto-renew/README.md",
+    "repository": "archive/github-backup-work/xserver-free-vps-auto-renew/README.md",
+    "source_sha256": "aa273cb5393452b5a1e2a2bfbc964cbcd49f2d7c230487c45f0ddc768fc98c87",
+    "published_sha256": "0ce7a3da91639ddb1a9417d11d633583c471eaeab416d61c70c2df8b2eb22510"
+  },
+  {
+    "source": "/opt/xserver/github-backup-work/xserver-free-vps-auto-renew/entrypoint.sh",
+    "repository": "archive/github-backup-work/xserver-free-vps-auto-renew/entrypoint.sh",
+    "source_sha256": "1f70f9a820e5e6d85f160e0a2ef6fa5415ec10fbd60af389e3f48ff1a4b486ef",
+    "published_sha256": "1f70f9a820e5e6d85f160e0a2ef6fa5415ec10fbd60af389e3f48ff1a4b486ef"
+  },
+  {
+    "source": "/opt/xserver/github-backup-work/xserver-free-vps-auto-renew/main.py",
+    "repository": "archive/github-backup-work/xserver-free-vps-auto-renew/main.py",
+    "source_sha256": "84c9139ae68458a691f9b812909703fefb16b97ce96f62b3aeb127066141e2f1",
+    "published_sha256": "84c9139ae68458a691f9b812909703fefb16b97ce96f62b3aeb127066141e2f1"
+  },
+  {
+    "source": "/opt/xserver/github-backup-work/xserver-free-vps-auto-renew/requirements.txt",
+    "repository": "archive/github-backup-work/xserver-free-vps-auto-renew/requirements.txt",
+    "source_sha256": "28c957c18463bece931c39e587d0dcb62da60eacb7b4f2c3685521c84d37675d",
+    "published_sha256": "28c957c18463bece931c39e587d0dcb62da60eacb7b4f2c3685521c84d37675d"
+  },
+  {
+    "source": "/opt/xserver/github-backup-work/xserver-free-vps-auto-renew/run-docker.sh",
+    "repository": "archive/github-backup-work/xserver-free-vps-auto-renew/run-docker.sh",
+    "source_sha256": "8e6679da5a099d97785eb3b978ce2c8380265679abb6ad176ba009ca827bed67",
+    "published_sha256": "8e6679da5a099d97785eb3b978ce2c8380265679abb6ad176ba009ca827bed67"
+  },
+  {
+    "source": "/opt/xserver/github-backup-work/xserver-free-vps-auto-renew/run_xserver_notify.py",
+    "repository": "archive/github-backup-work/xserver-free-vps-auto-renew/run_xserver_notify.py",
+    "source_sha256": "ed284a73d4bdd77d2d211a538faf5e0b662a715dabe2ed81aef28046517c5b6c",
+    "published_sha256": "ed284a73d4bdd77d2d211a538faf5e0b662a715dabe2ed81aef28046517c5b6c"
+  },
+  {
+    "source": "/opt/xserver/github-backup-work/xserver-free-vps-auto-renew/tg_bot.py",
+    "repository": "archive/github-backup-work/xserver-free-vps-auto-renew/tg_bot.py",
+    "source_sha256": "995a81df1aaaf21b3accbb8473c6cd1139c3f2c5f72a3d8edfc0cdd41189ffea",
+    "published_sha256": "d9215998c6f45d261b409ac0f0cafc508a2266504b3b88a3a617d92ea10631af"
+  },
+  {
+    "source": "/opt/xserver/migration-20261009/MIGRATION.md",
+    "repository": "archive/migration-20261009/MIGRATION.md",
+    "source_sha256": "f0c84c7a576d992ad1782a7040e21984a17d659eea10d83659dc47be8d526689",
+    "published_sha256": "f0c84c7a576d992ad1782a7040e21984a17d659eea10d83659dc47be8d526689"
+  },
+  {
+    "source": "/opt/xserver/migration-20261009/adapt.py",
+    "repository": "archive/migration-20261009/adapt.py",
+    "source_sha256": "4f25fd8140115cf8b8b12069f6cce2e2518de05d18cbc49ddba6eb388fb41531",
+    "published_sha256": "4f25fd8140115cf8b8b12069f6cce2e2518de05d18cbc49ddba6eb388fb41531"
+  },
+  {
+    "source": "/opt/xserver/migration-20261009/canary.py",
+    "repository": "archive/migration-20261009/canary.py",
+    "source_sha256": "51d9cb47640eacab5247295a9bd146185fe0c28609f56580e1fe76c69305a134",
+    "published_sha256": "51d9cb47640eacab5247295a9bd146185fe0c28609f56580e1fe76c69305a134"
+  },
+  {
+    "source": "/opt/xserver/migration-20261009/network_check.py",
+    "repository": "archive/migration-20261009/network_check.py",
+    "source_sha256": "0eb11bf70681d5d7fbd221d2ab11b609e12b1af52d01d5d451059eda08fe7f9c",
+    "published_sha256": "0eb11bf70681d5d7fbd221d2ab11b609e12b1af52d01d5d451059eda08fe7f9c"
+  },
+  {
+    "source": "/opt/xserver/migration-20261009/rollback.sh",
+    "repository": "archive/migration-20261009/rollback.sh",
+    "source_sha256": "d2aaa7cc7e33820981a402ee060b2b69df68285f7da79129637675aaf221b737",
+    "published_sha256": "d2aaa7cc7e33820981a402ee060b2b69df68285f7da79129637675aaf221b737"
+  },
+  {
+    "source": "/opt/xserver/migration-20261009/source/SUMMARY.md",
+    "repository": "archive/migration-20261009/source/SUMMARY.md",
+    "source_sha256": "46cf209d8b98e38420075370965afe61f99f289b92cef17fd09acb94a0b3f25e",
+    "published_sha256": "46cf209d8b98e38420075370965afe61f99f289b92cef17fd09acb94a0b3f25e"
+  },
+  {
+    "source": "/opt/xserver/migration-20261009/source/single_runner.py",
+    "repository": "archive/migration-20261009/source/single_runner.py",
+    "source_sha256": "333619fcfe5a4008b2014895560ed1e9d573387a050dcb96dfe3533eba3f8c08",
+    "published_sha256": "333619fcfe5a4008b2014895560ed1e9d573387a050dcb96dfe3533eba3f8c08"
+  },
+  {
+    "source": "/opt/xserver/migration-20261009/source/verified_single.py",
+    "repository": "archive/migration-20261009/source/verified_single.py",
+    "source_sha256": "7d6fca164205729aa82cfd633290bdcba93c5abe361a14218936cb10739f1d7f",
+    "published_sha256": "7d6fca164205729aa82cfd633290bdcba93c5abe361a14218936cb10739f1d7f"
+  },
+  {
+    "source": "/opt/xserver/migration-20261009/verify.py",
+    "repository": "archive/migration-20261009/verify.py",
+    "source_sha256": "7e08da1ead81c2b6e075a928366570db1aa727c5e5ff06eb61220fa922341962",
+    "published_sha256": "7e08da1ead81c2b6e075a928366570db1aa727c5e5ff06eb61220fa922341962"
+  },
+  {
+    "source": "/opt/xserver/notification-polish-20261009/run_selected.py",
+    "repository": "archive/notification-polish-20261009/run_selected.py",
+    "source_sha256": "37eb6589915392f76f8808bc228d04bb7b4b884effeca7facff6021bcf4cee92",
+    "published_sha256": "37eb6589915392f76f8808bc228d04bb7b4b884effeca7facff6021bcf4cee92"
+  },
+  {
+    "source": "/opt/xserver/notification-polish-20261009/run_xserver_notify.py.bak",
+    "repository": "archive/notification-polish-20261009/run_xserver_notify.py.bak",
+    "source_sha256": "f9a2594304aad4124446222e95749a78628381b5773a7faed33fac1e6545e145",
+    "published_sha256": "154c0bdb20282d71f75f0e55bb3c8619e3425888b881d091251ed503322f1116"
+  },
+  {
+    "source": "/opt/xserver/notification-polish-20261009/run_xserver_notify.py.before-split-status",
+    "repository": "archive/notification-polish-20261009/run_xserver_notify.py.before-split-status",
+    "source_sha256": "6a6159cc1c862070ac850bea0fff1c488f266caf6d32f9cd7ad0d3cd5ebe9a0f",
+    "published_sha256": "8275214e209b2708d214752b81632b46e2a6db936f9d776b90af5d953c00d28b"
+  },
+  {
+    "source": "/opt/xserver/notification-polish-20261009/test_notification.py",
+    "repository": "archive/notification-polish-20261009/test_notification.py",
+    "source_sha256": "e3cc20d51da014d05045741794b168a011fc9a06a107c7becba97efda9bc88e0",
+    "published_sha256": "e3cc20d51da014d05045741794b168a011fc9a06a107c7becba97efda9bc88e0"
+  },
+  {
+    "source": "/opt/xserver/renew-onvps/.gitignore",
+    "repository": "archive/renew-onvps/.gitignore",
+    "source_sha256": "8ec907a3e0b64476c289b5f4dc2cadbcb0b123214077361f3bfe56d90a9eaa29",
+    "published_sha256": "8ec907a3e0b64476c289b5f4dc2cadbcb0b123214077361f3bfe56d90a9eaa29"
+  },
+  {
+    "source": "/opt/xserver/renew-onvps/README.md",
+    "repository": "archive/renew-onvps/README.md",
+    "source_sha256": "358e82ce9bca5bedf321e4cac6e74d9b0d2e2036d07dbb8ca1d73792638280e2",
+    "published_sha256": "aa0814a50874e11d8c4795d69da6069c1e61db0a0c04cc4338273de846e6f99c"
+  },
+  {
+    "source": "/opt/xserver/renew-onvps/env.runtime.example",
+    "repository": "archive/renew-onvps/env.runtime.example",
+    "source_sha256": "50228af8ecf14d895bc85195396d0aba1097679cb3eb7b77d45df7f838d435ea",
+    "published_sha256": "50228af8ecf14d895bc85195396d0aba1097679cb3eb7b77d45df7f838d435ea"
+  },
+  {
+    "source": "/opt/xserver/renew-onvps/install.sh",
+    "repository": "archive/renew-onvps/install.sh",
+    "source_sha256": "100d7d4d35111513cd27bf512bb9eae873fcafff267cdf0a028e3e8b219d5225",
+    "published_sha256": "100d7d4d35111513cd27bf512bb9eae873fcafff267cdf0a028e3e8b219d5225"
+  },
+  {
+    "source": "/opt/xserver/renew-onvps/package.json",
+    "repository": "archive/renew-onvps/package.json",
+    "source_sha256": "4fe75371c66c4a2f89a5def00e59b6e85c2b48cf852bb6b121ce800de67d7407",
+    "published_sha256": "4fe75371c66c4a2f89a5def00e59b6e85c2b48cf852bb6b121ce800de67d7407"
+  },
+  {
+    "source": "/opt/xserver/renew-onvps/run_xserver_notify.py",
+    "repository": "archive/renew-onvps/run_xserver_notify.py",
+    "source_sha256": "1b196f7ce92426d524619a04ae7e1e819e7287841e578c3c85f5e481c2b63896",
+    "published_sha256": "1b196f7ce92426d524619a04ae7e1e819e7287841e578c3c85f5e481c2b63896"
+  },
+  {
+    "source": "/opt/xserver/renew-onvps/xserver/.env.example",
+    "repository": "archive/renew-onvps/xserver/.env.example",
+    "source_sha256": "dd41fd04d176a00272a8b64da1a09709e603b556544c46863cf6c5cd5c80768f",
+    "published_sha256": "dd41fd04d176a00272a8b64da1a09709e603b556544c46863cf6c5cd5c80768f"
+  },
+  {
+    "source": "/opt/xserver/renew-onvps/xserver/Dockerfile",
+    "repository": "archive/renew-onvps/xserver/Dockerfile",
+    "source_sha256": "c9e84f5e5ccb993f98cdaa97994b2771c674c16ece7c44802fdf53010e8f3069",
+    "published_sha256": "c9e84f5e5ccb993f98cdaa97994b2771c674c16ece7c44802fdf53010e8f3069"
+  },
+  {
+    "source": "/opt/xserver/renew-onvps/xserver/entrypoint.sh",
+    "repository": "archive/renew-onvps/xserver/entrypoint.sh",
+    "source_sha256": "1f70f9a820e5e6d85f160e0a2ef6fa5415ec10fbd60af389e3f48ff1a4b486ef",
+    "published_sha256": "1f70f9a820e5e6d85f160e0a2ef6fa5415ec10fbd60af389e3f48ff1a4b486ef"
+  },
+  {
+    "source": "/opt/xserver/renew-onvps/xserver/main.py",
+    "repository": "archive/renew-onvps/xserver/main.py",
+    "source_sha256": "68c6d6b78fcf14017563a49b72461989cc41a88ac690fa096f3621159da2890c",
+    "published_sha256": "68c6d6b78fcf14017563a49b72461989cc41a88ac690fa096f3621159da2890c"
+  },
+  {
+    "source": "/opt/xserver/renew-onvps/xserver/requirements.txt",
+    "repository": "archive/renew-onvps/xserver/requirements.txt",
+    "source_sha256": "28c957c18463bece931c39e587d0dcb62da60eacb7b4f2c3685521c84d37675d",
+    "published_sha256": "28c957c18463bece931c39e587d0dcb62da60eacb7b4f2c3685521c84d37675d"
+  },
+  {
+    "source": "/opt/xserver/renew-onvps/xserver/run-docker.sh",
+    "repository": "archive/renew-onvps/xserver/run-docker.sh",
+    "source_sha256": "8e6679da5a099d97785eb3b978ce2c8380265679abb6ad176ba009ca827bed67",
+    "published_sha256": "8e6679da5a099d97785eb3b978ce2c8380265679abb6ad176ba009ca827bed67"
+  },
+  {
+    "source": "/opt/xserver/renew-public/.env.example",
+    "repository": "archive/renew-public/.env.example",
+    "source_sha256": "b24c084c8fccbd8085c2885b58551bd9524b6389fba7c4d8bac40259865f3796",
+    "published_sha256": "1b420c2496217c146a4d189411f2fb69ef0cf403859f879f6aabf8409c360936"
+  },
+  {
+    "source": "/opt/xserver/renew-public/.github/workflows/main.yml",
+    "repository": "archive/renew-public/.github/workflows/main.yml.disabled",
+    "source_sha256": "f2377c4f0cfdf9f78a4697e172c7750560c272a7a71917fcacdf8df2038d8da6",
+    "published_sha256": "f2377c4f0cfdf9f78a4697e172c7750560c272a7a71917fcacdf8df2038d8da6"
+  },
+  {
+    "source": "/opt/xserver/renew-public/.gitignore",
+    "repository": "archive/renew-public/.gitignore",
+    "source_sha256": "d617048da47a4a9a12dd8b36519320d56d8e38fb96ae8ff23eede0a02c13d737",
+    "published_sha256": "d617048da47a4a9a12dd8b36519320d56d8e38fb96ae8ff23eede0a02c13d737"
+  },
+  {
+    "source": "/opt/xserver/renew-public/Dockerfile",
+    "repository": "archive/renew-public/Dockerfile",
+    "source_sha256": "c9e84f5e5ccb993f98cdaa97994b2771c674c16ece7c44802fdf53010e8f3069",
+    "published_sha256": "c9e84f5e5ccb993f98cdaa97994b2771c674c16ece7c44802fdf53010e8f3069"
+  },
+  {
+    "source": "/opt/xserver/renew-public/README.md",
+    "repository": "archive/renew-public/README.md",
+    "source_sha256": "aa8db855dd35c2e3190c8a3931f4af7d73de55c7e8a778771b15c09e0576d9fa",
+    "published_sha256": "863a7f00422575a4e09db72771bce782a592886cb2f96963a0a15b836edc0a18"
+  },
+  {
+    "source": "/opt/xserver/renew-public/entrypoint.sh",
+    "repository": "archive/renew-public/entrypoint.sh",
+    "source_sha256": "1f70f9a820e5e6d85f160e0a2ef6fa5415ec10fbd60af389e3f48ff1a4b486ef",
+    "published_sha256": "1f70f9a820e5e6d85f160e0a2ef6fa5415ec10fbd60af389e3f48ff1a4b486ef"
+  },
+  {
+    "source": "/opt/xserver/renew-public/main.py",
+    "repository": "archive/renew-public/main.py",
+    "source_sha256": "84c9139ae68458a691f9b812909703fefb16b97ce96f62b3aeb127066141e2f1",
+    "published_sha256": "84c9139ae68458a691f9b812909703fefb16b97ce96f62b3aeb127066141e2f1"
+  },
+  {
+    "source": "/opt/xserver/renew-public/requirements.txt",
+    "repository": "archive/renew-public/requirements.txt",
+    "source_sha256": "28c957c18463bece931c39e587d0dcb62da60eacb7b4f2c3685521c84d37675d",
+    "published_sha256": "28c957c18463bece931c39e587d0dcb62da60eacb7b4f2c3685521c84d37675d"
+  },
+  {
+    "source": "/opt/xserver/renew-public/run-docker.sh",
+    "repository": "archive/renew-public/run-docker.sh",
+    "source_sha256": "8e6679da5a099d97785eb3b978ce2c8380265679abb6ad176ba009ca827bed67",
+    "published_sha256": "8e6679da5a099d97785eb3b978ce2c8380265679abb6ad176ba009ca827bed67"
+  },
+  {
+    "source": "/opt/xserver/renew-public/run_xserver_notify.py",
+    "repository": "archive/renew-public/run_xserver_notify.py",
+    "source_sha256": "7e790886174d6a8fc02776de593a6ae16842d27ede1ff2ccb6cdb5da0699e19f",
+    "published_sha256": "7e790886174d6a8fc02776de593a6ae16842d27ede1ff2ccb6cdb5da0699e19f"
+  },
+  {
+    "source": "/opt/xserver/renew-public/tg_bot.py",
+    "repository": "archive/renew-public/tg_bot.py",
+    "source_sha256": "8ca66ae6ddf6c0753fb7daefcf97db0b6e5268008a30774b7b6bf8cbf2024d7f",
+    "published_sha256": "ce65e86ecdc1a39e01152d7d0cc3d9098484e3b6c8f81aea6b15ec76cd566c10"
+  },
+  {
+    "source": "/opt/xserver/upstream/.env.example",
+    "repository": "archive/upstream/.env.example",
+    "source_sha256": "b24c084c8fccbd8085c2885b58551bd9524b6389fba7c4d8bac40259865f3796",
+    "published_sha256": "1b420c2496217c146a4d189411f2fb69ef0cf403859f879f6aabf8409c360936"
+  },
+  {
+    "source": "/opt/xserver/upstream/.github/workflows/main.yml",
+    "repository": "archive/upstream/.github/workflows/main.yml.disabled",
+    "source_sha256": "f2377c4f0cfdf9f78a4697e172c7750560c272a7a71917fcacdf8df2038d8da6",
+    "published_sha256": "f2377c4f0cfdf9f78a4697e172c7750560c272a7a71917fcacdf8df2038d8da6"
+  },
+  {
+    "source": "/opt/xserver/upstream/.gitignore",
+    "repository": "archive/upstream/.gitignore",
+    "source_sha256": "e3886d319bf820a9c3a6b51bbfcac99e84f28ecda8ddedd9e4242d7f04373672",
+    "published_sha256": "e3886d319bf820a9c3a6b51bbfcac99e84f28ecda8ddedd9e4242d7f04373672"
+  },
+  {
+    "source": "/opt/xserver/upstream/Dockerfile",
+    "repository": "archive/upstream/Dockerfile",
+    "source_sha256": "c9e84f5e5ccb993f98cdaa97994b2771c674c16ece7c44802fdf53010e8f3069",
+    "published_sha256": "c9e84f5e5ccb993f98cdaa97994b2771c674c16ece7c44802fdf53010e8f3069"
+  },
+  {
+    "source": "/opt/xserver/upstream/README.md",
+    "repository": "archive/upstream/README.md",
+    "source_sha256": "aa8db855dd35c2e3190c8a3931f4af7d73de55c7e8a778771b15c09e0576d9fa",
+    "published_sha256": "863a7f00422575a4e09db72771bce782a592886cb2f96963a0a15b836edc0a18"
+  },
+  {
+    "source": "/opt/xserver/upstream/entrypoint.sh",
+    "repository": "archive/upstream/entrypoint.sh",
+    "source_sha256": "1f70f9a820e5e6d85f160e0a2ef6fa5415ec10fbd60af389e3f48ff1a4b486ef",
+    "published_sha256": "1f70f9a820e5e6d85f160e0a2ef6fa5415ec10fbd60af389e3f48ff1a4b486ef"
+  },
+  {
+    "source": "/opt/xserver/upstream/main.py",
+    "repository": "archive/upstream/main.py",
+    "source_sha256": "84c9139ae68458a691f9b812909703fefb16b97ce96f62b3aeb127066141e2f1",
+    "published_sha256": "84c9139ae68458a691f9b812909703fefb16b97ce96f62b3aeb127066141e2f1"
+  },
+  {
+    "source": "/opt/xserver/upstream/requirements.txt",
+    "repository": "archive/upstream/requirements.txt",
+    "source_sha256": "28c957c18463bece931c39e587d0dcb62da60eacb7b4f2c3685521c84d37675d",
+    "published_sha256": "28c957c18463bece931c39e587d0dcb62da60eacb7b4f2c3685521c84d37675d"
+  },
+  {
+    "source": "/opt/xserver/upstream/run-docker.sh",
+    "repository": "archive/upstream/run-docker.sh",
+    "source_sha256": "8e6679da5a099d97785eb3b978ce2c8380265679abb6ad176ba009ca827bed67",
+    "published_sha256": "8e6679da5a099d97785eb3b978ce2c8380265679abb6ad176ba009ca827bed67"
+  },
+  {
+    "source": "/opt/xserver/upstream/run_xserver_notify.py",
+    "repository": "archive/upstream/run_xserver_notify.py",
+    "source_sha256": "7e790886174d6a8fc02776de593a6ae16842d27ede1ff2ccb6cdb5da0699e19f",
+    "published_sha256": "7e790886174d6a8fc02776de593a6ae16842d27ede1ff2ccb6cdb5da0699e19f"
+  },
+  {
+    "source": "/opt/xserver/upstream/tg_bot.py",
+    "repository": "archive/upstream/tg_bot.py",
+    "source_sha256": "8ca66ae6ddf6c0753fb7daefcf97db0b6e5268008a30774b7b6bf8cbf2024d7f",
+    "published_sha256": "ce65e86ecdc1a39e01152d7d0cc3d9098484e3b6c8f81aea6b15ec76cd566c10"
+  },
+  {
+    "source": "/etc/systemd/system/xserver-checkin-now.service",
+    "repository": "systemd/xserver-checkin-now.service",
+    "source_sha256": "89a2573459016cf1ad67309d10d72cedf848bb9fe88eb10acc463434f234f0e6",
+    "published_sha256": "13242581555d3d55db7e036760e582c46619804aab4c0da0fa7387f8f6126bdd"
+  },
+  {
+    "source": "/etc/systemd/system/xserver-checkin-evening.timer",
+    "repository": "systemd/xserver-checkin-evening.timer",
+    "source_sha256": "17ab400e1c975e218655704af04718bc2bd67109152d0eef9eaf656e753fee63",
+    "published_sha256": "17ab400e1c975e218655704af04718bc2bd67109152d0eef9eaf656e753fee63"
+  },
+  {
+    "source": "/etc/systemd/system/xserver-checkin@.service",
+    "repository": "systemd/xserver-checkin@.service",
+    "source_sha256": "59ef859b610bb09c8919db08182f1733b1d05648a328a363544d10e8f85a2c4a",
+    "published_sha256": "58012369e85700bc2d073619a4df8d3ffa50cbd12e882578b907d5b246f556ea"
+  },
+  {
+    "source": "/etc/systemd/system/xserver-checkin-afternoon.timer",
+    "repository": "systemd/xserver-checkin-afternoon.timer",
+    "source_sha256": "fc632be658e1defb098811d3ff6ac9cf8f2ed857e1748ccf9a79d36904e97f06",
+    "published_sha256": "fc632be658e1defb098811d3ff6ac9cf8f2ed857e1748ccf9a79d36904e97f06"
+  }
+]

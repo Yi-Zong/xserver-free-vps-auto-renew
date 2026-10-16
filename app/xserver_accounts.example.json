@@ -1,0 +1,20 @@
+[
+  {
+    "email": "account1@example.invalid",
+    "password": "CHANGE_ME_PASSWORD",
+    "label": "account1",
+    "log": "xserver_account1.log"
+  },
+  {
+    "email": "account2@example.invalid",
+    "password": "CHANGE_ME_PASSWORD",
+    "label": "account2",
+    "log": "xserver_account2.log"
+  },
+  {
+    "email": "account3@example.invalid",
+    "password": "CHANGE_ME_PASSWORD",
+    "label": "account3",
+    "log": "xserver_account3.log"
+  }
+]

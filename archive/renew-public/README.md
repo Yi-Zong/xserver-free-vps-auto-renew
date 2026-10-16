@@ -120,7 +120,7 @@ cp .env.example .env
 
 ```env
 # XServer 登录信息
-EMAIL="your-email@example.com"
+EMAIL="account@example.invalid"
 PASSWORD="your-password"
 
 # Optional proxy for Playwright/Camoufox
@@ -198,7 +198,7 @@ python tg_bot.py
 示例：
 
 ```env
-PROXY_SERVER="socks5://user:pass@1.2.3.4:1080"
+PROXY_SERVER="socks5://user:pass@192.0.2.1:1080"
 ```
 
 当前 Bot 侧约束为：
@@ -228,7 +228,7 @@ PROXY_SERVER="socks5://user:pass@1.2.3.4:1080"
 示例：
 
 ```text
-xxxxxxx@gmail.com your_password socks5://user:pass@1.2.3.4:1080
+account@example.invalid your_password socks5://user:pass@192.0.2.1:1080
 ```
 
 ### 账号能力

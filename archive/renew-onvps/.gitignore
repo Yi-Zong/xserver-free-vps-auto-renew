@@ -1,0 +1,28 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+
+# Node
+node_modules/
+
+# Logs and artifacts
+logs/
+*.log
+*.png
+*.jpg
+*.jpeg
+*.webm
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
